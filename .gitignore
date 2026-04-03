@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+/files/email.properties
+/files/smtp.properties
+/files/email.html
+/files/mailboxes.txt
