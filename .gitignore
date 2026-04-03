@@ -31,7 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### ADDED ###
 /files/email.properties
 /files/smtp.properties
 /files/email.html
 /files/mailboxes.txt
+*.bat
