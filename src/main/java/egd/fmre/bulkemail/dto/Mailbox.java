@@ -1,4 +1,6 @@
 package egd.fmre.bulkemail.dto;
 
-public record Mailbox(String name, String address) {
+import java.io.Serializable;
+
+public record Mailbox(String name, String address) implements Serializable {
 }

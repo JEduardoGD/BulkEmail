@@ -2,7 +2,14 @@ package egd.fmre.bulkemail.service.impl;
 
 import egd.fmre.bulkemail.dto.Maildata;
 import egd.fmre.bulkemail.service.SendMailService;
-import jakarta.mail.*;
+import egd.fmre.bulkemail.service.exception.SendMailServiceException;
+import jakarta.mail.Authenticator;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
@@ -14,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class SendMailServiceImpl implements SendMailService {
     @Override
-    public void sendMail(Maildata maildata) {
+    public void sendMail(Maildata maildata) throws SendMailServiceException {
         Session session = Session.getInstance(maildata.getProp(), new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -46,7 +53,7 @@ public class SendMailServiceImpl implements SendMailService {
 
             Transport.send(message);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new SendMailServiceException(e);
         }
     }
 }

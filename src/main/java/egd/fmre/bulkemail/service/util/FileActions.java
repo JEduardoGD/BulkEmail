@@ -1,7 +1,6 @@
 package egd.fmre.bulkemail.service.util;
 
 import egd.fmre.bulkemail.service.exception.FileActionsException;
-import egd.fmre.bulkemail.service.exception.LoadBodyEmailFileException;
 
 import java.io.File;
 import java.nio.file.Paths;

@@ -3,7 +3,6 @@ package egd.fmre.bulkemail.service.impl;
 import egd.fmre.bulkemail.service.LoadEmailPropertiesService;
 import egd.fmre.bulkemail.service.exception.FileActionsException;
 import egd.fmre.bulkemail.service.exception.LoadEmailPropertiesServiceException;
-import egd.fmre.bulkemail.service.exception.LoadMailBoxesServiceException;
 import egd.fmre.bulkemail.service.util.FileActions;
 import org.springframework.stereotype.Service;
 

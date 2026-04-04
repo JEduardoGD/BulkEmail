@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class LoadMailBoxesServiceImpl extends FileActions implements LoadMailBoxesService {
@@ -28,7 +27,7 @@ public class LoadMailBoxesServiceImpl extends FileActions implements LoadMailBox
         }
         List<String> lines;
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(pathString))){
-            lines = bufferedReader.lines().collect(Collectors.toList());
+            lines = bufferedReader.lines().toList();
         } catch (IOException e) {
             throw new LoadMailBoxesServiceException(e.getMessage());
         }
@@ -38,7 +37,7 @@ public class LoadMailBoxesServiceImpl extends FileActions implements LoadMailBox
             return m.matches();
         };
 
-        if(!lines.stream().anyMatch(lineIsAMailboxPredicate)){
+        if(lines.stream().noneMatch(lineIsAMailboxPredicate)){
             throw new LoadMailBoxesServiceException("File does not have right structure");
         }
 

@@ -2,7 +2,11 @@ package egd.fmre.bulkemail.service.impl;
 
 import egd.fmre.bulkemail.dto.Mailbox;
 import egd.fmre.bulkemail.dto.Maildata;
-import egd.fmre.bulkemail.service.*;
+import egd.fmre.bulkemail.service.BulkEmailService;
+import egd.fmre.bulkemail.service.LoadBodyEmailFileService;
+import egd.fmre.bulkemail.service.LoadMailBoxesService;
+import egd.fmre.bulkemail.service.SendMailService;
+import egd.fmre.bulkemail.service.LoadEmailPropertiesService;
 import egd.fmre.bulkemail.service.exception.BulkemailServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +39,7 @@ public class BulkEmailServiceImpl implements BulkEmailService {
     private String emailPropertiesSmtpFileLocation;
 
     @Override
-    public void sendBulkEmail() {
+    public void sendBulkEmail() throws BulkemailServiceException, InterruptedException {
         String htmlEmail;
         List<Mailbox> mailboxes;
         Properties emailProperties;
@@ -46,7 +50,7 @@ public class BulkEmailServiceImpl implements BulkEmailService {
             emailProperties = loadEmailPropertiesService.loadEmailProperties(emailPropertiesFileLocation);
             smtpProperties = loadEmailPropertiesService.loadEmailProperties(emailPropertiesSmtpFileLocation);
         } catch (BulkemailServiceException e) {
-            throw new RuntimeException(e);
+            throw new BulkemailServiceException(e);
         }
         boolean isFirstMailbox = true;
 
@@ -70,19 +74,11 @@ public class BulkEmailServiceImpl implements BulkEmailService {
             maildata.setTo(new Mailbox(mailbox.name(), mailbox.address()));
             sendMailService.sendMail(maildata);
             if(isFirstMailbox){
-                try {
-                    log.info("Sleeping for 60 seconds");
-                    Thread.sleep(60 * 1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                log.info("Sleeping for 60 seconds");
+                Thread.sleep(60 * 1000l);
             } else {
-                try {
-                    log.info("Sleeping for " + emailProperties.getProperty("email.sleeptime") + " seconds");
-                    Thread.sleep(Integer.valueOf(emailProperties.getProperty("email.sleeptime")) * 1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                log.info("Sleeping for " + emailProperties.getProperty("email.sleeptime") + " seconds");
+                Thread.sleep(Integer.valueOf(emailProperties.getProperty("email.sleeptime")) * 1000l);
             }
             isFirstMailbox = false;
         }
